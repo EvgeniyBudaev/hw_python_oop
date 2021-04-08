@@ -86,7 +86,6 @@ class CashCalculator(Calculator):
         super().__init__(limit)
 
     def get_today_cash_remained(self, currency):
-        currency = currency.lower()
         """Баланс"""
         for record in self.records:
             day = record.date
@@ -97,13 +96,13 @@ class CashCalculator(Calculator):
             else:
                 self.total_all_time += record.amount
 
-        if currency == "eur" or currency == "EURO" or currency == "Euro":
+        if currency == "Euro":
             difference = (self.limit - self.total_day) / self.EURO_RATE
             self.balance = self.rounding(difference)
-        elif currency == "usd" or currency == "USD":
+        elif currency == "USD":
             difference = (self.limit - self.total_day) / self.USD_RATE
             self.balance = self.rounding(difference)
-        elif currency == "rub" or currency == "руб":
+        elif currency == "руб":
             difference = self.limit - self.total_day
             self.balance = self.rounding(difference)
 
@@ -137,37 +136,37 @@ class CaloriesCalculator(Calculator):
 
 
 # для CashCalculator
-# r1 = Record(amount=145, comment='Безудержный шопинг', date='02.04.2021')
-# r2 = Record(amount=1568,
-#             comment='Наполнение потребительской корзины',
-#             date='08.04.2021')
-# r3 = Record(amount=690, comment='Катание на такси', date='08.04.2021')
-#
-# # для CaloriesCalculator
-# r4 = Record(amount=1186,
-#             comment='Кусок тортика. И ещё один.',
-#             date='24.02.2019')
-# r5 = Record(amount=100, comment='Йогурт.', date='23.02.2019')
-# r6 = Record(amount=1140, comment='Баночка чипсов.', date='08.04.2021')
-# r7 = Record(amount=1, comment='Сухарики.', date='02.04.2021')
-# r8 = Record(amount=1, comment='Хлеб.')
-# r9 = Record(amount=1000, comment='Сковородка')
-# r10 = Record(amount=499.9999, comment='Ноутбук')
-# r11 = Record(amount=0, comment='Пусто')
+r1 = Record(amount=145, comment='Безудержный шопинг', date='02.04.2021')
+r2 = Record(amount=1568,
+            comment='Наполнение потребительской корзины',
+            date='08.04.2021')
+r3 = Record(amount=690, comment='Катание на такси', date='08.04.2021')
+
+# для CaloriesCalculator
+r4 = Record(amount=1186,
+            comment='Кусок тортика. И ещё один.',
+            date='24.02.2019')
+r5 = Record(amount=100, comment='Йогурт.', date='23.02.2019')
+r6 = Record(amount=1140, comment='Баночка чипсов.', date='08.04.2021')
+r7 = Record(amount=1, comment='Сухарики.', date='02.04.2021')
+r8 = Record(amount=1, comment='Хлеб.')
+r9 = Record(amount=1000, comment='Сковородка')
+r10 = Record(amount=499.9999, comment='Ноутбук')
+r11 = Record(amount=0, comment='Пусто')
 
 
 
-# cash_calculator = CashCalculator(1000)
+cash_calculator = CashCalculator(1000)
 # cash_calculator.add_record(r1)
 # cash_calculator.add_record(r3)
 # cash_calculator.add_record(r5)
 # cash_calculator.add_record(r8)
 # cash_calculator.add_record(r9)
-# cash_calculator.add_record(r10)
+cash_calculator.add_record(r10)
 # cash_calculator.add_record(r11)
-# print(cash_calculator.get_today_cash_remained("eur"))
-# print(cash_calculator.get_today_stats())
-# print(cash_calculator.get_week_stats())
+print(cash_calculator.get_today_cash_remained("USD"))
+print(cash_calculator.get_today_stats())
+print(cash_calculator.get_week_stats())
 
 
 # calories_calculator = CaloriesCalculator(2000)
