@@ -28,19 +28,12 @@ class Calculator:
         self.records = []
         self.total_day = 0
         self.total_week = 0
-        self.total_all_time = 0
+        self.today = dt.date.today()
+        self.week_ago = self.today - dt.timedelta(7)
 
     def add_record(self, record):
         """Сохраняет новую запись"""
         self.records.append(record)
-        day = record.date
-        last_day = (self.get_current_day() - record.date).days
-
-        if day == self.get_current_day():
-            self.total_day += record.amount
-
-        if last_day < 7:
-            self.total_week += record.amount
 
     def get_current_day(self):
         """Возвращает текущий день"""
@@ -50,20 +43,26 @@ class Calculator:
 
     def get_today_stats(self):
         """Считает, сколько калорий съедено (денег потрачено) за сегодня"""
+        for record in self.records:
+            if record.date == self.get_current_day():
+                self.total_day += record.amount
         result = self.rounding(self.total_day)
         return result
 
     def get_week_stats(self):
         """Считает, сколько получено калорий (потрачено денег) за последние 7 дней"""
-        result = self.total_week
+        for record in self.records:
+            if self.week_ago <= record.date <= self.today:
+                self.total_week += record.amount
+        result = self.rounding(self.total_week)
         return result
 
-    def get_all_time(self):
-        """Считает, сколько потрачено за всё время"""
-        result = self.rounding(self.total_day)
-        return result
+    def get_today_balance(self):
+        balance = self.limit - self.get_today_stats()
+        return balance
 
     def rounding(self, num):
+        """Округляет до второго знака после запятой"""
         number = Decimal(num)
         number = number.quantize(Decimal("1.00"))
         return number
@@ -75,29 +74,31 @@ class Calculator:
 class CashCalculator(Calculator):
     EURO_RATE = 91.40
     USD_RATE = 77.00
-    balance = 0
 
     def __init__(self, limit):
         super().__init__(limit)
 
-    def get_today_cash_remained(self, currency):
+    def get_today_cash_remained(self, currency="руб"):
         """Баланс"""
+        get_balance = self.get_today_balance()
+
         if currency == "Euro":
             difference = (self.limit - self.total_day) / self.EURO_RATE
-            self.balance = self.rounding(difference)
+            get_balance = self.rounding(difference)
         elif currency == "USD":
             difference = (self.limit - self.total_day) / self.USD_RATE
-            self.balance = self.rounding(difference)
+            get_balance = self.rounding(difference)
         elif currency == "руб":
             difference = self.limit - self.total_day
-            self.balance = self.rounding(difference)
+            get_balance = self.rounding(difference)
 
-        if self.total_day > self.limit:
-            return f"Денег нет, держись: твой долг - {abs(self.balance)} {currency}"
-        elif self.total_day == self.limit:
+
+        if get_balance == 0:
             return "Денег нет, держись"
+        elif get_balance > 0:
+            return f"На сегодня осталось {get_balance} {currency}"
         else:
-            return f"На сегодня осталось {self.balance} {currency}"
+            return f"Денег нет, держись: твой долг - {abs(get_balance)} {currency}"
 
 
 class CaloriesCalculator(Calculator):
@@ -147,7 +148,7 @@ cash_calculator.add_record(r1)
 # cash_calculator.add_record(r2)
 cash_calculator.add_record(r3)
 # print(cash_calculator.get_today_cash_remained("руб"))
-# print(cash_calculator.get_today_stats())
+print(cash_calculator.get_today_stats())
 print(cash_calculator.get_week_stats())
 
 
