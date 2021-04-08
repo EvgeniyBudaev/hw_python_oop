@@ -60,12 +60,12 @@ class Calculator:
         """Считает, сколько потрачено за всё время"""
 
         for record in self.records:
-            # last_day = (self.get_current_day() - record.date).days
-            #
-            # if last_day < 7:
-            self.total_all_time += record.amount
+            last_day = (self.get_current_day() - record.date).days
 
-        result = self.rounding(self.total_all_time)
+            if last_day < 7:
+                self.total_day += record.amount
+
+        result = self.rounding(self.total_day)
         return f"За всё время: {result}"
 
     def rounding(self, num):
@@ -160,6 +160,7 @@ cash_calculator = CashCalculator(1000)
 # cash_calculator.add_record(r1)
 # cash_calculator.add_record(r3)
 # cash_calculator.add_record(r5)
+cash_calculator.add_record(r7)
 # cash_calculator.add_record(r8)
 # cash_calculator.add_record(r9)
 cash_calculator.add_record(r10)
