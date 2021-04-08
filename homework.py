@@ -2,19 +2,12 @@ import datetime as dt
 
 
 class Record:
-    def __init__(self, amount, comment, date=None):
+    date_now = dt.datetime.now().strftime('%d.%m.%Y')
+
+    def __init__(self, amount, comment, date=date_now):
         self.amount = amount
         self.comment = comment
-        self.date_now = str(dt.datetime.now().date())
         self.date = date
-        self.is_date(date)
-
-    def is_date(self, date):
-        """Проверка на передачу параметра. Если date не передается, то date будет текущая дата"""
-        if date == None:
-            self.date = '08.04.2021'
-        else:
-            self.date = date
 
     def __str__(self):
         return f"amount: {self.amount}, comment: {self.comment}, date: {self.date}"
@@ -114,30 +107,30 @@ class CaloriesCalculator(Calculator):
 
 
 # для CashCalculator
-# r1 = Record(amount=145, comment='Безудержный шопинг', date='02.04.2021')
-# r2 = Record(amount=1568,
-#             comment='Наполнение потребительской корзины',
-#             date='08.04.2021')
-# r3 = Record(amount=690, comment='Катание на такси', date='08.04.2021')
-#
-# # для CaloriesCalculator
-# r4 = Record(amount=1186,
-#             comment='Кусок тортика. И ещё один.',
-#             date='24.02.2019')
-# r5 = Record(amount=84, comment='Йогурт.', date='23.02.2019')
-# r6 = Record(amount=1140, comment='Баночка чипсов.', date='08.04.2021')
-# r7 = Record(amount=1, comment='Сухарики.', date='02.04.2021')
-# r8 = Record(amount=1, comment='Хлеб.')
+r1 = Record(amount=145, comment='Безудержный шопинг', date='02.04.2021')
+r2 = Record(amount=1568,
+            comment='Наполнение потребительской корзины',
+            date='08.04.2021')
+r3 = Record(amount=690, comment='Катание на такси', date='08.04.2021')
+
+# для CaloriesCalculator
+r4 = Record(amount=1186,
+            comment='Кусок тортика. И ещё один.',
+            date='24.02.2019')
+r5 = Record(amount=84, comment='Йогурт.', date='23.02.2019')
+r6 = Record(amount=1140, comment='Баночка чипсов.', date='08.04.2021')
+r7 = Record(amount=1, comment='Сухарики.', date='02.04.2021')
+r8 = Record(amount=1, comment='Хлеб.')
 
 
 
-# cash_calculator = CashCalculator(1000)
-# cash_calculator.add_record(r1)
-# cash_calculator.add_record(r3)
-# cash_calculator.add_record(r8)
-# print(cash_calculator.get_today_cash_remained("rub"))
-# print(cash_calculator.get_today_stats())
-# print(cash_calculator.get_week_stats())
+cash_calculator = CashCalculator(1000)
+cash_calculator.add_record(r1)
+cash_calculator.add_record(r3)
+cash_calculator.add_record(r8)
+print(cash_calculator.get_today_cash_remained("rub"))
+print(cash_calculator.get_today_stats())
+print(cash_calculator.get_week_stats())
 
 
 # calories_calculator = CaloriesCalculator(2000)
