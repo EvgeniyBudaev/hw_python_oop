@@ -34,11 +34,13 @@ class Calculator:
         """Сохраняет новую запись"""
         self.records.append(record)
         day = record.date
+        last_day = (self.get_current_day() - record.date).days
 
         if day == self.get_current_day():
             self.total_day += record.amount
-        # else:
-        #     self.total_week += record.amount
+
+        if last_day < 7:
+            self.total_week += record.amount
 
     def get_current_day(self):
         """Возвращает текущий день"""
@@ -53,19 +55,13 @@ class Calculator:
 
     def get_week_stats(self):
         """Считает, сколько получено калорий (потрачено денег) за последние 7 дней"""
-        for record in self.records:
-            last_day = (self.get_current_day() - record.date).days
-
-            if last_day < 7:
-                self.total_week += record.amount
-
-        result = self.rounding(self.total_week)
+        result = self.total_week
         return result
 
     def get_all_time(self):
         """Считает, сколько потрачено за всё время"""
         result = self.rounding(self.total_day)
-        return f"За всё время: {result}"
+        return result
 
     def rounding(self, num):
         number = Decimal(num)
@@ -126,7 +122,7 @@ class CaloriesCalculator(Calculator):
 
 
 # для CashCalculator
-r1 = Record(amount=100, comment='Безудержный шопинг', date='03.04.2021')
+r1 = Record(amount=100, comment='Безудержный шопинг', date='02.04.2021')
 r2 = Record(amount=1568,
             comment='Наполнение потребительской корзины',
             date='08.04.2021')
@@ -150,8 +146,8 @@ cash_calculator = CashCalculator(1000)
 cash_calculator.add_record(r1)
 # cash_calculator.add_record(r2)
 cash_calculator.add_record(r3)
-print(cash_calculator.get_today_cash_remained("руб"))
-print(cash_calculator.get_today_stats())
+# print(cash_calculator.get_today_cash_remained("руб"))
+# print(cash_calculator.get_today_stats())
 print(cash_calculator.get_week_stats())
 
 
