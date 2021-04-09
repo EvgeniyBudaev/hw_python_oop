@@ -19,9 +19,6 @@ class Record:
         else:
             self.date = date
 
-    def __str__(self):
-        return f"amount: {self.amount}, comment: {self.comment}, date: {self.date}"
-
 
 class Calculator:
     def __init__(self, limit):
@@ -71,9 +68,6 @@ class Calculator:
         number = number.quantize(Decimal("1.00"))
         return number
 
-    def __str__(self):
-        return f"limit: {self.limit}, records: {self.records}"
-
 
 class CashCalculator(Calculator):
     EURO_RATE = 91.40
@@ -88,7 +82,7 @@ class CashCalculator(Calculator):
         currencies = {'usd': ('USD', CashCalculator.USD_RATE),
                       'eur': ('Euro', CashCalculator.EURO_RATE),
                       'rub': ('руб', CashCalculator.RUB_RATE)}
-        
+
         get_balance = self.get_today_balance()
 
         if get_balance == 0:
@@ -123,46 +117,10 @@ class CaloriesCalculator(Calculator):
         if self.total_day > self.limit:
             return "Хватит есть!"
         else:
-            return f"Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {balance} кКал"
+            message = (f"Сегодня можно съесть что-нибудь ещё, " 
+                       f"но с общей калорийностью не более {balance} кКал")
 
+            return message
 
-
-# для CashCalculator
-# r1 = Record(amount=100, comment='Безудержный шопинг', date='02.04.2021')
-# r2 = Record(amount=1568,
-#             comment='Наполнение потребительской корзины',
-#             date='08.04.2021')
-# r3 = Record(amount=600, comment='Катание на такси', date='08.04.2021')
-
-# для CaloriesCalculator
-# r4 = Record(amount=1186,
-#             comment='Кусок тортика. И ещё один.',
-#             date='24.02.2019')
-# r5 = Record(amount=100, comment='Йогурт.', date='23.02.2019')
-# r6 = Record(amount=1140, comment='Баночка чипсов.', date='08.04.2021')
-# r7 = Record(amount=1, comment='Сухарики.', date='02.04.2021')
-# r8 = Record(amount=1, comment='Хлеб.')
-# r9 = Record(amount=1000, comment='Сковородка')
-# r10 = Record(amount=499.9999, comment='Ноутбук')
-# r11 = Record(amount=0, comment='Пусто')
-
-
-
-# cash_calculator = CashCalculator(1000)
-# cash_calculator.add_record(r1)
-# cash_calculator.add_record(r2)
-# cash_calculator.add_record(r3)
-# cash_calculator.get_today_cash_remained("rub")
-# print(cash_calculator.get_today_stats())
-# print(cash_calculator.get_week_stats())
-
-
-# calories_calculator = CaloriesCalculator(2000)
-# calories_calculator.add_record(r5)
-# calories_calculator.add_record(r6)
-# calories_calculator.add_record(r8)
-# print(calories_calculator.get_calories_remained())
-# print(calories_calculator.get_today_stats())
-# print(calories_calculator.get_week_stats())
 
 
