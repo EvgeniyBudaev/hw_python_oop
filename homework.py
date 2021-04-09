@@ -119,5 +119,4 @@ class CaloriesCalculator(Calculator):
         else:
             message = (f'Сегодня можно съесть что-нибудь ещё, но с общей '
                        f'калорийностью не более {balance} кКал')
-
             return message
