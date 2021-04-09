@@ -117,10 +117,7 @@ class CaloriesCalculator(Calculator):
         if self.total_day > self.limit:
             return "Хватит есть!"
         else:
-            message = (f"Сегодня можно съесть что-нибудь ещё, " 
-                       f"но с общей калорийностью не более {balance} кКал")
+            message = (f'Сегодня можно съесть что-нибудь ещё, но с общей '
+                       f'калорийностью не более {balance} кКал')
 
             return message
-
-
-
