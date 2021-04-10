@@ -3,21 +3,14 @@ from decimal import Decimal
 
 
 class Record:
-    def __init__(self, amount, comment, date=dt.datetime.now().date()):
+    def __init__(self, amount, comment, date=None):
+        """:type date: str"""
         self.amount = amount
         self.comment = comment
-        self.date = None
-        self.is_date(date)
-
-    def is_date(self, date):
-        """Проверка на вхождение date"""
-        if isinstance(date, str):
-            date_format = '%d.%m.%Y'
-            moment = dt.datetime.strptime(date, date_format)
-            day = moment.date()
-            self.date = day
+        if date is None:
+            self.date = dt.datetime.now().date()
         else:
-            self.date = date
+            self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
 
 
 class Calculator:
@@ -51,9 +44,7 @@ class Calculator:
     def get_week_stats(self):
         """Считает, сколько получено калорий (потрачено денег)
          за последние 7 дней"""
-        for record in self.records:
-            if self.week_ago <= record.date <= self.today:
-                self.total_week += record.amount
+        self.total_week = sum(record.amount for record in self.records if self.week_ago <= record.date <= self.today)
         result = self.rounding(self.total_week)
         return result
 
