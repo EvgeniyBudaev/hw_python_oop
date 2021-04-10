@@ -44,7 +44,8 @@ class Calculator:
     def get_week_stats(self):
         """Считает, сколько получено калорий (потрачено денег)
          за последние 7 дней"""
-        self.total_week = sum(record.amount for record in self.records if self.week_ago <= record.date <= self.today)
+        self.total_week = sum(record.amount for record in self.records
+                              if self.week_ago <= record.date <= self.today)
         result = self.rounding(self.total_week)
         return result
 
